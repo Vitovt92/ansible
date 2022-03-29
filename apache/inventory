@@ -10,6 +10,9 @@
 [file_servers]
 10.0.2.6
 
+[workstations]
+localhost
+
 # Group 'multy' with all servers
 [multi:children]
 app
