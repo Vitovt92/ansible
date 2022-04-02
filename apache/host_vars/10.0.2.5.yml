@@ -1,0 +1,2 @@
+ssh_users: "vitovt ansible"
+ssh_template_file: sshd_config_centos.j2
