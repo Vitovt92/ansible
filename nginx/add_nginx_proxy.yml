@@ -1,0 +1,31 @@
+---
+- hosts: all
+  become: true
+  tasks:
+
+    # Install nginx server
+    #
+    #
+    
+  - name: Install nginx (apt)
+    apt:
+      name:
+        - nginx
+      state: latest
+      update_cache: yes
+    when: ansible_os_family == "Debian" 
+
+  - name: generate nginx configuration from template
+    template:
+      src: "conf.d/{{ item.src_name }}"
+      dest: "/etc/nginx/conf.d/{{ item.dest_name }}"
+      owner: root
+      group: root
+      mode: 0644
+    loop:
+      - { src_name: "domain.conf.j2", dest_name: "{{ domain_name_main }}.conf" }
+      - { src_name: "domain_ssl.conf.j2", dest_name: "{{ domain_name_main }}_ssl.conf" }
+      - { src_name: "domain_proxy_include.j2", dest_name: "{{ domain_name_main }}_include" }
+#   notify: restart_sshd
+
+

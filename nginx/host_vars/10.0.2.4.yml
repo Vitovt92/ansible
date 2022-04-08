@@ -1,0 +1,4 @@
+domain_name_main: "example.com" 
+domain_name_socondary: "www.example.com"
+server_indexes: "index.php"
+proxy_port: 8000

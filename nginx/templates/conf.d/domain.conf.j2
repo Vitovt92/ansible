@@ -1,0 +1,16 @@
+server {
+	listen              80;
+	server_name         {{ domain_name_main }} {{ domain_name_socondary }};
+	access_log          /var/log/nginx/{{ domain_name_main }}-access.log main;
+	error_log           /var/log/nginx/{{ domain_name_main }}-error.log;
+
+	location ~ /.well-known {
+    		allow all;
+    		root /var/www/html;
+	}
+	
+	location / {
+		return 301 https://{{ domain_name_main }}$request_uri;
+	}
+}
+
