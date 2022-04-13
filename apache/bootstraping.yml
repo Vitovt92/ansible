@@ -23,23 +23,45 @@
   become: true
   tasks:
 
-  - name: create ansible user
+
+  - name: create vitovt,ansible users
     tags: always
     user:
-      name: ansible
+      name: 
+        - vitovt
+        - ansible
       groups: root
 
-  - name: add ssh key for ansible
+  - name: add ssh key for vitovt,ansible
     tags: always
     authorized_key:
-      user: ansible
+      user:
+        - ansible
+        - vitovt
       key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPNz6Orje4saQQUmFAfTtvl/nmfaG8ZhN4G5KROlM/iy"
 
-  - name: add sodoers file for ansible
+  - name: add sodoers file for vitovt,ansible
     tags: always
     copy:
       src: sudoers
-      dest: /etc/sudoers.d/ansible
+      dest:
+        - /etc/sudoers.d/vitovt
+        - /etc/sudoers.d/ansible
       owner: root
       group: root
+
+
+# Install programs
+#
+#
         
+  - name: Install programs 
+    tags: always
+    apt:
+      name:
+        - vim
+        - git
+        - screen
+      state: latest
+    when: ansible_distribution == "Ubuntu"
+
