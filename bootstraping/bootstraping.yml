@@ -1,0 +1,100 @@
+---
+
+- hosts: all
+  become: true
+  pre_tasks:
+
+      - name: update (CentOS)
+        tags: always
+        yum:
+          update_only: yes
+          update_cache: yes
+        when: ansible_os_family == "CentOS"
+
+      - name: update (Ubuntu)
+        tags: always
+        apt:
+          update_cache: yes
+          upgrade: yes
+        when: ansible_os_family == "Debian"
+
+
+- hosts: app
+  become: true
+  tasks:
+
+  - name: create vitovt,ansible users
+    tags: always
+    user:
+      name: "{{ item.username }}"
+      shell: /bin/bash
+      password: "{{ item.password }}"
+      create_home: yes
+    loop:
+      - { username: "vitovt", password: "6$rT8z4cOUJW90166K$RO5jLFHzNIemHxSuQ/zIJQ266vcKZ6LaDOo8OV13Nw.1/dys8Q9YKybG3HHQ2fG/BAs1Wr.qvgZuGinsNywtK0" }
+      - { username: "ansible", password: "6$rT8z4cOUJW90166K$RO5jLFHzNIemHxSuQ/zIJQ266vcKZ6LaDOo8OV13Nw.1/dys8Q9YKybG3HHQ2fG/BAs1Wr.qvgZuGinsNywtK0" }
+
+
+  - name: add ssh key for vitovt,ansible
+    tags: always
+    authorized_key:
+      user: "{{ item.username }}"
+      key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPNz6Orje4saQQUmFAfTtvl/nmfaG8ZhN4G5KROlM/iy  {{ item.username }}@fedora"
+    loop:
+      - { username: "vitovt" }
+      - { username: "ansible" }
+
+  - name: add sodoers file for vitovt,ansible
+    tags: always
+    template:
+      src: "sudoers/sudoers"
+      dest: "/etc/sudoers.d/{{ item.username }}"
+      owner: root
+      group: root
+    loop:  
+      - { username: "vitovt" }
+      - { username: "ansible" }
+
+# Copy conf files
+#
+#
+  - name: copy screenrc and vimrc
+    copy:
+      src: "{{ item.src }}"
+      dest: "{{ item.dest }}"
+    loop:
+      - { src: "screenrc", dest: "/home/vitovt/.screenrc" }
+      - { src: "vimrc", dest: "/home/vitovt/.vimrc" }
+
+# Create dirs for vim
+#
+#
+  - name: Creates directories for vim
+    file:
+      path: "{{ item.dir_name }}" 
+      state: directory
+      owner: vitovt
+      group: vitovt
+      mode: 0775
+    loop:
+      - { dir_name: "/home/vitovt/.vim" }
+      - { dir_name: "/home/vitovt/.vim/swp" }
+      - { dir_name: "/home/vitovt/.vim/undodir" }
+
+
+# Install programs
+#
+#
+        
+  - name: Install programs 
+    tags: always
+    apt:
+      name:
+        - vim
+        - mc
+        - git
+        - screen
+      state: latest
+      update_cache: yes
+    when: ansible_distribution == "Ubuntu"
+
