@@ -1,5 +1,4 @@
 # Application servers
-[app]
-134.209.239.190
-
+[webservers]
+postbaroko.com.ua
 

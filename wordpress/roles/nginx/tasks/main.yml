@@ -1,0 +1,33 @@
+---
+# tasks file for nginx
+#
+#
+
+- name: Update apt cache
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Install nginx
+  apt:
+    name: nginx
+    state: present
+
+- name: Start nginx
+  service:
+    name: nginx
+    state: started
+
+- name: Update nginx confs for WordPress + PHP
+  template: 
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: www-data 
+    group: www-data
+    mode: 0644
+  notify:
+    - restart nginx
+  loop:
+    - { src: "default-site.conf.j2", dest: "/etc/nginx/conf.d/{{ server_hostname }}.conf" }
+    - { src: "nginx-wp-common_include.j2", dest: "/etc/nginx/conf.d/{{ server_hostname }}_include" }
+    

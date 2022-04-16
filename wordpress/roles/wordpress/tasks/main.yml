@@ -1,0 +1,39 @@
+---
+- name: Crate webroot
+  file:
+    state: directory
+    path: "/tmp/wordpress-{{ wp_version }}"
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Check if WordPress directory exists in /srv/www
+  stat: path=/var/www/html/{{server_hostname}}
+  register: check_path
+
+- name: Unarchive WordPress to /tmp
+  unarchive:
+    src: https://wordpress.org/wordpress-{{ wp_version }}.tar.gz
+    dest: "/tmp/wordpress-{{ wp_version }}"
+    remote_src: yes
+    owner: www-data
+    group: www-data
+  when: not check_path.stat.exists
+
+- name: Move WordPress install files
+  command: mv /tmp/wordpress-{{ wp_version }}/wordpress /var/www/html/{{ server_hostname}} 
+  when: not check_path.stat.exists
+
+- name: Fetch random salts for WordPress config
+  local_action: command curl https://api.wordpress.org/secret-key/1.1/salt/
+  register: "wp_salt"
+  become: no
+
+- name: Add wp-config
+  template: 
+    src: wp-config.php 
+    dest: "/var/www/html/{{server_hostname}}/wp-config.php"
+    owner: www-data
+    group: www-data
+    mode: 0640
+

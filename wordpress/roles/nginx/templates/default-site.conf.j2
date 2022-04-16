@@ -2,7 +2,8 @@ server {
   listen 80;
   listen [::]:80;
   server_name {{ server_hostname }};
-  root /srv/www/{{ server_hostname }};
+  root /var/www/html/{{ server_hostname }};
   server_tokens off;
-  include /etc/nginx/nginx-wp-common.conf;
+
+  include /etc/nginx/conf.d/{{ server_hostname }}_include;
 }
