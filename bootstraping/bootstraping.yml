@@ -9,7 +9,7 @@
         yum:
           update_only: yes
           update_cache: yes
-        when: ansible_os_family == "CentOS"
+        when: ansible_os_family == "RedHat"
 
       - name: update (Ubuntu)
         tags: always
@@ -94,7 +94,21 @@
         - mc
         - git
         - screen
+        - wget  
       state: latest
       update_cache: yes
     when: ansible_distribution == "Ubuntu"
 
+
+  - name: Install programs 
+    tags: always
+    yum:
+      name:
+        - vim
+        - mc
+        - git
+        - screen
+        - wget  
+      state: latest
+      update_cache: yes
+    when: ansible_os_family == "RedHat"

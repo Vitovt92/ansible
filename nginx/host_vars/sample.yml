@@ -1,0 +1,5 @@
+domain_name_main: "sample.com" 
+domain_name_socondary: ""
+server_indexes: "index.html index.htm index.php"
+proxy_port: 8000
+php_fpm_port: 9000

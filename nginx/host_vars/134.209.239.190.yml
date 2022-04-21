@@ -1,5 +1,0 @@
-domain_name_main: "testsite3.innodatasolutions.fr" 
-domain_name_socondary: ""
-server_indexes: "index.html index.htm"
-proxy_port: 8000
-php_fpm_port: 9000
