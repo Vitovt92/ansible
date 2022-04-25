@@ -18,6 +18,16 @@
     name: nginx
     state: started
 
+- name: Copy main nginx config file
+  copy:
+    src: "nginx.conf"
+    dest: "/etc/nginx/nginx.conf"
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - restart nginx
+
 - name: Update nginx confs for WordPress + PHP
   template: 
     src: "{{ item.src }}"
