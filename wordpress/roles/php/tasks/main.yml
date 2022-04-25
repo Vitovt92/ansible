@@ -1,0 +1,27 @@
+---
+
+- name: Add php repository
+  tags: php
+  apt_repository:
+    repo: "ppa:ondrej/php"
+    state: present
+
+- name: Install php extensions
+  tags: php
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - php7.4
+    - php7.4-mysql
+    - php7.4-gd
+    - php-ssh2
+    - php7.4-mcrypt 
+    - php7.4-fpm 
+
+- name: Setup php-fpm
+  tags: php
+  replace: dest=/etc/php/7.4/fpm/php.ini regexp="(;cgi.fix_pathinfo=1)" replace="cgi.fix_pathinfo=0"
+  notify:
+    - restart nginx
+  become: yes

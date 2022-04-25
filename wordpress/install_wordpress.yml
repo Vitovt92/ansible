@@ -6,5 +6,5 @@
     - nginx
     - wordpress
     - mysql
-      #- php
+    - php
       #- postfix
