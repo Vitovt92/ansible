@@ -2,9 +2,13 @@
 wp_db_name: wordpress
 wp_db_user: wordpressuser
 wp_db_password: Uuphojeev5ai 
-  
 mysql_port: 3306
 mysql_root_password: root
+
+# PHP settings
+php_fpm_port: 9000
+php_version: 7.4
+
 
 auto_up_disable: true
 

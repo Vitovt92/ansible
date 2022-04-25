@@ -12,16 +12,46 @@
     name: "{{ item }}"
     state: present
   loop:
-    - php7.4
-    - php7.4-mysql
-    - php7.4-gd
+    - php{{ php_version }}
+    - php{{ php_version }}-mysql
+    - php{{ php_version }}-gd
     - php-ssh2
-    - php7.4-mcrypt 
-    - php7.4-fpm 
+    - php{{ php_version }}-mcrypt 
+    - php{{ php_version }}-fpm 
 
 - name: Setup php-fpm
   tags: php
-  replace: dest=/etc/php/7.4/fpm/php.ini regexp="(;cgi.fix_pathinfo=1)" replace="cgi.fix_pathinfo=0"
+  replace: dest=/etc/php/{{ php_version }}/fpm/php.ini regexp="(;cgi.fix_pathinfo=1)" replace="cgi.fix_pathinfo=0"
   notify:
     - restart nginx
-  become: yes
+
+
+- name: Create pool
+  tags: php
+  template: 
+    src: "pool.conf.j2"
+    dest: "/etc/php/{{ php_version }}/fpm/pool.d/{{ server_hostname }}.conf"
+    owner: www-data 
+    group: www-data
+    mode: 0644
+  notify:
+    - restart nginx
+
+- name: Crate /var/log/php-fpm
+  tags: php
+  file:
+    state: directory
+    path: "/var/log/php-fpm/"
+    owner: www-data
+    group: www-data
+    mode: 0755
+
+- name: Crate error logs
+  tags: php
+  file:
+    path: "/var/log/php-fpm/{{ server_hostname }}.error.log"
+    owner: www-data
+    group: www-data
+    mode: 0644
+
+
