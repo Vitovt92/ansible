@@ -23,7 +23,7 @@
   tags: php
   replace: dest=/etc/php/{{ php_version }}/fpm/php.ini regexp="(;cgi.fix_pathinfo=1)" replace="cgi.fix_pathinfo=0"
   notify:
-    - restart nginx
+    - restart php-fpm
 
 
 - name: Create pool
@@ -35,7 +35,7 @@
     group: www-data
     mode: 0644
   notify:
-    - restart nginx
+    - restart php-fpm
 
 - name: Crate /var/log/php-fpm
   tags: php
@@ -46,12 +46,13 @@
     group: www-data
     mode: 0755
 
-- name: Crate error logs
+- name: Ensure error log file exists
   tags: php
-  file:
-    path: "/var/log/php-fpm/{{ server_hostname }}.error.log"
+  copy:
+    content: ""
+    dest: "/var/log/php-fpm/{{ server_hostname }}.error.log"
+    force: no
     owner: www-data
     group: www-data
     mode: 0644
-
 
