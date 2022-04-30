@@ -24,15 +24,15 @@
   tasks:
 
   - name: create vitovt,ansible users
-    tags: always
+    tags: always, pass
     user:
       name: "{{ item.username }}"
       shell: /bin/bash
       password: "{{ item.password }}"
       create_home: yes
     loop:
-      - { username: "vitovt", password: "6$rT8z4cOUJW90166K$RO5jLFHzNIemHxSuQ/zIJQ266vcKZ6LaDOo8OV13Nw.1/dys8Q9YKybG3HHQ2fG/BAs1Wr.qvgZuGinsNywtK0" }
-      - { username: "ansible", password: "6$rT8z4cOUJW90166K$RO5jLFHzNIemHxSuQ/zIJQ266vcKZ6LaDOo8OV13Nw.1/dys8Q9YKybG3HHQ2fG/BAs1Wr.qvgZuGinsNywtK0" }
+      - { username: "vitovt", password: "$6$Ihhby7B6hrb/cxCP$I2LMAxAFe2cSEWVsJOND63I4a9vPF5gECePcIkK98udiCu8LCaKSaCmv/BNvY/nrdq5XNHIDnzqpmVM3RGX4U0" }
+      - { username: "ansible", password: "$6$Ihhby7B6hrb/cxCP$I2LMAxAFe2cSEWVsJOND63I4a9vPF5gECePcIkK98udiCu8LCaKSaCmv/BNvY/nrdq5XNHIDnzqpmVM3RGX4U0" }
 
 
   - name: add ssh key for vitovt,ansible
