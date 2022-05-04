@@ -1,0 +1,35 @@
+- name: create vitovt,ansible users
+  tags: users, pass
+  user:
+    name: "{{ item.username }}"
+    shell: /bin/bash
+    password: "{{ item.password }}"
+    create_home: yes
+  loop:
+    - { username: "vitovt", password: "$6$Ihhby7B6hrb/cxCP$I2LMAxAFe2cSEWVsJOND63I4a9vPF5gECePcIkK98udiCu8LCaKSaCmv/BNvY/nrdq5XNHIDnzqpmVM3RGX4U0" }
+    - { username: "ansible", password: "$6$Ihhby7B6hrb/cxCP$I2LMAxAFe2cSEWVsJOND63I4a9vPF5gECePcIkK98udiCu8LCaKSaCmv/BNvY/nrdq5XNHIDnzqpmVM3RGX4U0" }
+
+- name: add ssh key for vitovt,ansible
+  tags: users, key
+  authorized_key:
+    user: "{{ item.username }}"
+    key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPNz6Orje4saQQUmFAfTtvl/nmfaG8ZhN4G5KROlM/iy  {{ item.username }}@fedora"
+  loop:
+    - { username: "vitovt" }
+    - { username: "ansible" }    
+
+- name: add sodoers file for vitovt,ansible
+  tags: users, sudo
+  template:
+    src: "sudoers.j2"
+    dest: "/etc/sudoers.d/{{ item.username }}"
+    owner: root
+    group: root
+    mode: 440
+  loop:
+    - { username: "vitovt" }
+    - { username: "ansible" }
+
+    
+
+    

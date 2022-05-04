@@ -1,0 +1,30 @@
+- name: Install programs (Debian)
+  tags: vim 
+  package:
+    name:
+      - vim
+    state: latest
+    update_cache: yes
+
+- name: copy vimrc
+  tags: vim
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  loop:
+    - { src: "vimrc", dest: "/home/vitovt/.vimrc" }
+
+
+- name: Creates directories for vim 
+  tags: vim
+  file:
+    path: "{{ item.dir_name }}"
+    state: directory
+    owner: vitovt
+    group: vitovt
+    mode: 0775
+  loop:
+    - { dir_name: "/home/vitovt/.vim" }
+    - { dir_name: "/home/vitovt/.vim/swp" }
+    - { dir_name: "/home/vitovt/.vim/undodir" }
+

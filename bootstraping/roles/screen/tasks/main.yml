@@ -1,0 +1,15 @@
+- name: Install programs (Debian)
+  tags: screen 
+  package:
+    name:
+      - screen
+    state: latest
+    update_cache: yes
+
+- name: copy screenrc and vimrc
+  tags: screen
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  loop:
+    - { src: "screenrc", dest: "/home/vitovt/.screenrc" }

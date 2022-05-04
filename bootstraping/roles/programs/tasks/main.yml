@@ -1,0 +1,12 @@
+- name: Install programs
+  tags: programs
+  package:
+    name:
+      - mc
+      - git
+      - wget
+      - net-tools
+      - ansible
+    state: latest
+    update_cache: yes
+
