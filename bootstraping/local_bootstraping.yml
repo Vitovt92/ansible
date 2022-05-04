@@ -19,7 +19,7 @@
         when: ansible_os_family == "Debian"
 
 
-- hosts: app
+- hosts: localhost
   become: true
   tasks:
 
