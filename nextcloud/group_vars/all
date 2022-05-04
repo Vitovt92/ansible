@@ -1,6 +1,6 @@
 # WordPress database settings
-nc_db_name: wordpress
-nc_db_user: wordpressuser
+nc_db_name: nextcloud
+nc_db_user: nextclouduser
 nc_db_password: Uuphojeev5ai 
 mysql_port: 3306
 mysql_root_password: root
@@ -9,6 +9,6 @@ mysql_root_password: root
 http_port: 80
 php_version: 7.4
 
-server_hostname: vitovttest.com.ua
+server_hostname: nextcloudtest.com.ua
 
 
