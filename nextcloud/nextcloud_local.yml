@@ -1,0 +1,9 @@
+# To use playbook-pull
+---
+- hosts: localhost
+  become: yes
+
+  roles:
+    - apache
+    - nextcloud
+    - mysql
