@@ -51,6 +51,7 @@
       dest: "/etc/sudoers.d/{{ item.username }}"
       owner: root
       group: root
+      mode: 440
     loop:  
       - { username: "vitovt" }
       - { username: "ansible" }
