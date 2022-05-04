@@ -1,0 +1,31 @@
+---
+- name: Crate /tmp/nextcloud dir
+  tags: nextcloud
+  file:
+    state: directory
+    path: "/tmp/nextcloud"
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Check if Nextcloud directory exists in /srv/www
+  tags: nextcloud
+  stat: path=/var/www/html/{{server_hostname}}
+  register: check_path
+
+- name: Unarchive Nextcloud to /tmp
+  tags: nextcloud
+  unarchive:
+    src: https://download.nextcloud.com/server/releases/latest.zip 
+    dest: "/tmp/nextcloud"
+    remote_src: yes
+    owner: www-data
+    group: www-data
+  when: not check_path.stat.exists
+
+- name: Move Nextcloud install files
+  tags: nextcloud
+  command: mv /tmp/nextcloud/nextcloud /var/www/html/{{ server_hostname}} 
+  when: not check_path.stat.exists
+
+

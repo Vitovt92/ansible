@@ -1,0 +1,15 @@
+<VirtualHost *:{{ http_port }}>
+    ServerName {{ server_hostname }}
+    ServerAlias www.{{ server_hostname }}
+    DocumentRoot /var/www/html/{{ server_hostname }}
+    ErrorLog ${APACHE_LOG_DIR}/{{ server_hostname }}-error.log
+    CustomLog ${APACHE_LOG_DIR}/{{ server_hostname }}-access.log combined
+
+    <Directory /var/www/html/{{ server_hostname }}>
+        AllowOverride All
+        DirectoryIndex index.html index.php
+        Options Includes SymLinksifOwnerMatch
+        Options Includes IncludesNOEXEC
+    </Directory>
+
+</VirtualHost>
