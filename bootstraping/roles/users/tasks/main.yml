@@ -13,7 +13,7 @@
   tags: users, key
   authorized_key:
     user: "{{ item.username }}"
-    key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPNz6Orje4saQQUmFAfTtvl/nmfaG8ZhN4G5KROlM/iy  {{ item.username }}@fedora"
+    key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOZ+fSnZaJko1hgYBrlOg0o0gDzbXsTKxCoT+jmXroIF {{ item.username }}@fedora"
   loop:
     - { username: "vitovt" }
     - { username: "ansible" }    
